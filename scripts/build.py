@@ -35,8 +35,12 @@ def load_payload(yaml_path):
     return [str(x).strip() for x in payload if isinstance(x, (str, int)) and str(x).strip()]
 
 def save_clash_yaml(payload_list, out_path):
-    data = {"payload": payload_list}
-    out_path.write_text(yaml.safe_dump(data, allow_unicode=True, sort_keys=False), encoding="utf-8")
+    # 统一单引号，避免 YAML 解析歧义
+    lines = ["payload:"]
+    for s in payload_list:
+        s = str(s).strip().strip('"').strip("'")
+        lines.append(f"  - '{s}'")
+    out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 def split_domains(domains):
     """把域名列表拆成 suffix 与 exact 两类。
