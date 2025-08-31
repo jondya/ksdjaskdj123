@@ -76,11 +76,11 @@ def to_singbox_source_for_domains(domains):
         rules.append({"domain_suffix": sorted(set(suffixes))})
     if exacts:
         rules.append({"domain": sorted(set(exacts))})
-    return {"version": 4, "rules": rules}
+    return {"version": 3, "rules": rules}  # ← 这里用 3
 
 def to_singbox_source_for_ipcidr(cidrs):
     ips = [str(x).strip().strip("'").strip('"') for x in cidrs]
-    return {"version": 4, "rules": [{"ip_cidr": ips}]}
+    return {"version": 3, "rules": [{"ip_cidr": ips}]}  # ← 这里也用 3
 
 def maybe_compile_srs(json_path, srs_path):
     try:
